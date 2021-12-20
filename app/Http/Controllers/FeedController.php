@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class FeedController extends Controller
 {
+    /**
+     * list
+     *
+     * @param  mixed $request
+     *
+     * Method for getting, filtering and searching Feed
+     *
+     * @return void
+     */
     public function list(Request $request)
     {
         $query = Feed::with('medias');
