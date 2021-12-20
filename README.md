@@ -9,8 +9,10 @@
 3. Rename `env.example` to `.env`
    Indicate your DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD
 4. `php artisan key:generate`
-5. `npm run watch`
-6. `php artisan serve`
+5. ```php artisan migrate```
+6. `php artisan db:seed --class=FeedSeeder`
+7. `npm run watch`
+8. `php artisan serve`
 
 Open the URL in the browser:
 `http://127.0.0.1:8000`
