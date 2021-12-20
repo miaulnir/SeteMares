@@ -17,9 +17,11 @@ class FeedController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->get('search');
-            $query->where('title', 'LIKE', "%{$search}%")->orWhere('content', 'LIKE', "%{$search}%");
+            $query->where(function ($query) use ($search) {
+                $query->where('title', 'LIKE', "%{$search}%")->orWhere('content', 'LIKE', "%{$search}%");
+            });
         }
 
-        return $query->get();
+        return $query->orderBy('published')->get();
     }
 }

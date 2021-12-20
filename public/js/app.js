@@ -1916,6 +1916,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1932,6 +1976,9 @@ __webpack_require__.r(__webpack_exports__);
         modified: "",
         medias: []
       },
+      search: "",
+      category: "",
+      show: [],
       media: {
         id: "",
         type: "",
@@ -1943,10 +1990,39 @@ __webpack_require__.r(__webpack_exports__);
     this.getFeeds();
   },
   methods: {
+    loadData: function loadData() {
+      this.getFeeds(this.search, this.category);
+    },
     getFeeds: function getFeeds() {
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("api/feeds").then(function (res) {
-        console.log(res);
+      var _this = this;
+
+      var search = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+      var category = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("api/feeds", {
+        search: search,
+        category: category
+      }).then(function (res) {
+        _this.feeds = res.data;
+        console.log(res.data);
       });
+    },
+    openFeed: function openFeed(id) {
+      var index = this.show.indexOf(id);
+
+      if (index > -1) {
+        console.log(this.show);
+        this.show.splice(index, 1);
+      } else {
+        this.show.push(id);
+      }
+    }
+  },
+  watch: {
+    search: function search(val) {
+      this.loadData();
+    },
+    category: function category(val) {
+      this.loadData();
     }
   }
 });
@@ -37539,16 +37615,132 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("h2", [_vm._v("Feeds")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.search,
+              expression: "search",
+            },
+          ],
+          attrs: { placeholder: "Search" },
+          domProps: { value: _vm.search },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.search = $event.target.value
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.category,
+              expression: "category",
+            },
+          ],
+          attrs: { placeholder: "Filter by category" },
+          domProps: { value: _vm.category },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.category = $event.target.value
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.feeds, function (feed) {
+        return _c("div", { key: feed.id, staticClass: "card card-body" }, [
+          _c(
+            "h3",
+            {
+              domProps: { innerHTML: _vm._s(feed.title) },
+              on: {
+                click: function ($event) {
+                  return _vm.openFeed(feed.id)
+                },
+              },
+            },
+            [_vm._v("\n            " + _vm._s(feed.title) + "\n        ")]
+          ),
+          _vm._v(" "),
+          _vm.show.indexOf(feed.id) != -1
+            ? _c(
+                "div",
+                [
+                  _c("div", [_vm._v("Media:")]),
+                  _vm._v(" "),
+                  _vm._l(feed.medias, function (media) {
+                    return _c("div", { key: media.id }, [
+                      _c("img", {
+                        style: {
+                          width:
+                            JSON.parse(media.media).attributes.width + "px",
+                          height:
+                            JSON.parse(media.media).attributes.height + "px",
+                        },
+                        attrs: { src: JSON.parse(media.media).attributes.url },
+                      }),
+                    ])
+                  }),
+                  _vm._v(" "),
+                  _c("p", {
+                    domProps: {
+                      innerHTML: _vm._s(JSON.parse(feed.content)[0].content),
+                    },
+                  }),
+                ],
+                2
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n            Primary Category:\n            " +
+                _vm._s(
+                  JSON.parse(feed.categories).primary
+                    ? JSON.parse(feed.categories).primary
+                    : JSON.parse(feed.categories).additional[0]
+                ) +
+                "\n        "
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n            Additional Category:\n            " +
+                _vm._s(JSON.parse(feed.categories).additional.toString()) +
+                "\n\n        "
+            ),
+          ]),
+        ])
+      }),
+      _vm._v(" "),
+      !!!_vm.feeds.length
+        ? _c("div", [_vm._v("\n        Not Found Feeds!\n    ")])
+        : _vm._e(),
+    ],
+    2
+  )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h2", [_vm._v("Lol")])])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -49936,8 +50128,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/vagrant/code/SeteMares/full-stack-test/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/vagrant/code/SeteMares/full-stack-test/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/redhat/CODE/SeteMares/full-stack-test/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/redhat/CODE/SeteMares/full-stack-test/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
